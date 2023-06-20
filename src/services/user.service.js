@@ -1,4 +1,4 @@
-import { userModel } from "../DAO/models/users.model.js";
+import { userModel } from '../DAO/models/users.model.js';
 class UserService {
   async getAll() {
     const users = await userModel.find(

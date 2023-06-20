@@ -1,16 +1,16 @@
-import fs from "fs";
+import fs from 'fs';
 
 export default class ProductManager {
   constructor(fileName) {
     this.fileName = fileName;
     this.products = [];
-    this.thumbnailsPath = "/";
+    this.thumbnailsPath = '/';
     this.loadProducts();
   }
 
   loadProducts() {
     try {
-      const data = fs.readFileSync(this.fileName, "utf-8");
+      const data = fs.readFileSync(this.fileName, 'utf-8');
       if (data) {
         this.products = JSON.parse(data);
       }
@@ -21,7 +21,7 @@ export default class ProductManager {
 
   saveProducts() {
     try {
-      fs.writeFileSync(this.fileName, JSON.stringify(this.products), "utf-8");
+      fs.writeFileSync(this.fileName, JSON.stringify(this.products), 'utf-8');
     } catch (err) {
       console.log(`Error al escribir archivo: ${err.message}`);
     }
@@ -37,45 +37,43 @@ export default class ProductManager {
       !product.code ||
       !product.stock
     ) {
-      console.log("Todos los campos son obligatorios");
+      console.log('Todos los campos son obligatorios');
       return;
     }
 
     // Validar el tipo de dato de los campos
-    if (typeof product.title !== "string") {
+    if (typeof product.title !== 'string') {
       console.log("El campo 'title' debe ser una cadena de caracteres");
       return;
     }
 
-    if (typeof product.description !== "string") {
+    if (typeof product.description !== 'string') {
       console.log("El campo 'description' debe ser una cadena de caracteres");
       return;
     }
 
-    if (typeof product.category !== "string") {
+    if (typeof product.category !== 'string') {
       console.log("El campo 'category' debe ser una cadena de caracteres");
       return;
     }
 
-    if (typeof product.price !== "number") {
+    if (typeof product.price !== 'number') {
       console.log("El campo 'price' debe ser un número");
       return;
     }
 
-    if (typeof product.code !== "string") {
+    if (typeof product.code !== 'string') {
       console.log("El campo 'code' debe ser una cadena de caracteres");
       return;
     }
 
-    if (typeof product.stock !== "number") {
+    if (typeof product.stock !== 'number') {
       console.log("El campo 'stock' debe ser un número");
       return;
     }
 
     // Validar que no se repita el código
-    const codeAlreadyExists = this.products.some(
-      (prod) => prod.code === product.code
-    );
+    const codeAlreadyExists = this.products.some(prod => prod.code === product.code);
 
     if (codeAlreadyExists) {
       console.log(`Ya existe un producto con el código ${product.code}`);
@@ -83,16 +81,12 @@ export default class ProductManager {
     }
 
     // Validar y establecer el valor por defecto para el campo status
-    const status = typeof product.status === "boolean" ? product.status : true;
+    const status = typeof product.status === 'boolean' ? product.status : true;
 
     // Validar y obtener las rutas completas de las imágenes (thumbnails)
-    const thumbnails = Array.isArray(product.thumbnails)
-      ? product.thumbnails
-      : [];
+    const thumbnails = Array.isArray(product.thumbnails) ? product.thumbnails : [];
 
-    const thumbnailsWithFullPath = thumbnails.map(
-      (thumbnail) => this.thumbnailsPath + thumbnail
-    );
+    const thumbnailsWithFullPath = thumbnails.map(thumbnail => this.thumbnailsPath + thumbnail);
 
     // Agregar el producto al arreglo con un id autoincrementable
     const newProduct = {
@@ -112,16 +106,14 @@ export default class ProductManager {
   }
 
   async getProductById(id) {
-    const product = this.products.find((product) => product.id === id);
+    const product = this.products.find(product => product.id === id);
     if (product) {
       return product;
     }
   }
 
   async updateProduct(id, updatedProduct) {
-    const productIndex = this.products.findIndex(
-      (product) => product.id === id
-    );
+    const productIndex = this.products.findIndex(product => product.id === id);
     if (productIndex === -1) {
       console.log(`Producto ${id} no encontrado`);
       return;
@@ -137,9 +129,7 @@ export default class ProductManager {
   }
 
   async deleteProduct(id) {
-    const productIndex = this.products.findIndex(
-      (product) => product.id === id
-    );
+    const productIndex = this.products.findIndex(product => product.id === id);
     if (productIndex === -1) {
       console.log(`Producto ${id} no encontrado`);
       return;

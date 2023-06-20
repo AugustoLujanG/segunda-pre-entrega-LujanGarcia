@@ -1,7 +1,7 @@
-import fs from "fs";
-import ProductManager from "./productManager.js";
+import fs from 'fs';
+import ProductManager from './productManager.js';
 
-const productManager = new ProductManager("db/products.json");
+const productManager = new ProductManager('db/products.json');
 
 export default class CartManager {
   constructor(fileName) {
@@ -12,9 +12,9 @@ export default class CartManager {
 
   loadCarts() {
     try {
-      const data = fs.readFileSync(this.fileName, "utf-8");
+      const data = fs.readFileSync(this.fileName, 'utf-8');
       if (data) {
-        this.carts = JSON.parse(data).map((cart) => ({
+        this.carts = JSON.parse(data).map(cart => ({
           ...cart,
           products: cart.products || [],
         }));
@@ -25,7 +25,7 @@ export default class CartManager {
   }
   saveCarts() {
     try {
-      fs.writeFileSync(this.fileName, JSON.stringify(this.carts), "utf-8");
+      fs.writeFileSync(this.fileName, JSON.stringify(this.carts), 'utf-8');
     } catch (err) {
       console.log(`Error al escribir el archivo del carrito: ${err.message}`);
     }
@@ -47,18 +47,16 @@ export default class CartManager {
   }
 
   async getCartById(id) {
-    const cart = this.carts.find((cart) => cart.id === id);
+    const cart = this.carts.find(cart => cart.id === id);
     if (cart) {
       return cart;
     }
   }
 
   async addProductToCart(cartId, productId) {
-    const cart = this.carts.find((cart) => cart.id === cartId);
+    const cart = this.carts.find(cart => cart.id === cartId);
 
-    const existingProduct = cart.products.find(
-      (product) => product.id === productId
-    );
+    const existingProduct = cart.products.find(product => product.id === productId);
 
     if (existingProduct) {
       existingProduct.quantity++;

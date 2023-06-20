@@ -36,9 +36,9 @@
   font-weight: bold;
 }
 
-.form-container input[type="number"],
-.form-container input[type="text"],
-.form-container input[type="url"] {
+.form-container input[type='number'],
+.form-container input[type='text'],
+.form-container input[type='url'] {
   width: 100%;
   padding: 8px;
   font-size: 14px;
@@ -47,9 +47,9 @@
   transition: border-color 0.2s;
 }
 
-.form-container input[type="number"]:focus,
-.form-container input[type="text"]:focus,
-.form-container input[type="url"]:focus {
+.form-container input[type='number']:focus,
+.form-container input[type='text']:focus,
+.form-container input[type='url']:focus {
   outline: none;
   border-color: #7a8ce3;
 }

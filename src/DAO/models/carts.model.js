@@ -1,7 +1,7 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
 export const cartModel = model(
-  "carts",
+  'carts',
   new Schema({
     id: { type: Number, required: true },
     products: [

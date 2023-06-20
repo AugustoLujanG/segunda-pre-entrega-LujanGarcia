@@ -1,7 +1,7 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
 export const productModel = model(
-  "products",
+  'products',
   new Schema({
     title: { type: String, required: true, max: 100 },
     description: { type: String, required: true, max: 250 },

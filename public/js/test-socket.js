@@ -1,22 +1,22 @@
 const socket = io();
 
-const addProduct = document.getElementById("addProductForm");
-const titleProd = document.getElementById("titleProd");
-const descProd = document.getElementById("descProd");
-const catProd = document.getElementById("catProd");
-const priceProd = document.getElementById("priceProd");
-const codeProd = document.getElementById("codeProd");
-const stockProd = document.getElementById("stockProd");
-const url = document.getElementById("urlInput");
+const addProduct = document.getElementById('addProductForm');
+const titleProd = document.getElementById('titleProd');
+const descProd = document.getElementById('descProd');
+const catProd = document.getElementById('catProd');
+const priceProd = document.getElementById('priceProd');
+const codeProd = document.getElementById('codeProd');
+const stockProd = document.getElementById('stockProd');
+const url = document.getElementById('urlInput');
 
-const deleteProductForm = document.getElementById("deleteProductForm");
-const id = document.getElementById("productId");
+const deleteProductForm = document.getElementById('deleteProductForm');
+const id = document.getElementById('productId');
 
-socket.on("products", (productsList) => {
-  const productListContainer = document.getElementById("dynamic-list");
-  productListContainer.innerHTML = ""; // Limpiar el contenido existente
+socket.on('products', productsList => {
+  const productListContainer = document.getElementById('dynamic-list');
+  productListContainer.innerHTML = ''; // Limpiar el contenido existente
 
-  productsList.forEach((product) => {
+  productsList.forEach(product => {
     const productHTML = `
     <div class="col-md-3">
       <div class="card">
@@ -34,11 +34,11 @@ socket.on("products", (productsList) => {
       </div>
     </div>`;
 
-    productListContainer.insertAdjacentHTML("beforeend", productHTML);
+    productListContainer.insertAdjacentHTML('beforeend', productHTML);
   });
 });
 
-addProduct.addEventListener("submit", (e) => {
+addProduct.addEventListener('submit', e => {
   e.preventDefault();
   const newProd = {
     title: titleProd.value,
@@ -49,12 +49,12 @@ addProduct.addEventListener("submit", (e) => {
     stock: parseInt(stockProd.value),
     price: parseInt(priceProd.value),
   };
-  socket.emit("new-product", newProd);
+  socket.emit('new-product', newProd);
   addProduct.reset();
 });
 
-deleteProductForm.addEventListener("submit", (e) => {
+deleteProductForm.addEventListener('submit', e => {
   e.preventDefault();
-  socket.emit("delete-product", productId.value);
+  socket.emit('delete-product', productId.value);
   deleteProductForm.reset();
 });

@@ -1,14 +1,14 @@
-import express from "express";
-import CartManager from "../DAO/cartManager.js";
-import { cartService } from "../services/cart.service.js";
+import express from 'express';
+import CartManager from '../DAO/cartManager.js';
+import { cartService } from '../services/cart.service.js';
 
 export const cartsRouter = express.Router();
 
-const cartManager = new CartManager("db/carts.json");
+const cartManager = new CartManager('db/carts.json');
 
 // GET todos los carritos
 
-cartsRouter.get("/", async (req, res) => {
+cartsRouter.get('/', async (req, res) => {
   try {
     // const carts = await cartManager.getCarts();
     const carts = await cartService.getAll();
@@ -23,7 +23,7 @@ cartsRouter.get("/", async (req, res) => {
 
 // POST
 
-cartsRouter.post("/", async (req, res) => {
+cartsRouter.post('/', async (req, res) => {
   try {
     const newCart = await cartManager.createCart();
     res.status(201).json(newCart);
@@ -34,7 +34,7 @@ cartsRouter.post("/", async (req, res) => {
 
 // GET /:cid
 
-cartsRouter.get("/:cid", async (req, res) => {
+cartsRouter.get('/:cid', async (req, res) => {
   try {
     const cartId = req.params.cid;
     const cart = await cartManager.getCartById(parseInt(cartId));
@@ -51,7 +51,7 @@ cartsRouter.get("/:cid", async (req, res) => {
 
 // POST /:cid/product/:pid
 
-cartsRouter.post("/:cid/product/:pid", async (req, res) => {
+cartsRouter.post('/:cid/product/:pid', async (req, res) => {
   try {
     const cartId = parseInt(req.params.cid);
     const productId = parseInt(req.params.pid);
@@ -59,17 +59,13 @@ cartsRouter.post("/:cid/product/:pid", async (req, res) => {
     // Verificar si el carrito existe
     const cart = await cartManager.getCartById(cartId);
     if (!cart) {
-      return res
-        .status(404)
-        .json({ message: `Carrito ${cartId} no encontrado` });
+      return res.status(404).json({ message: `Carrito ${cartId} no encontrado` });
     }
 
     // Verificar si el producto existe
     const product = await cartManager.getProductById(productId);
     if (!product) {
-      return res
-        .status(404)
-        .json({ message: `Producto ${productId} no encontrado` });
+      return res.status(404).json({ message: `Producto ${productId} no encontrado` });
     }
 
     await cartManager.addProductToCart(cartId, productId);

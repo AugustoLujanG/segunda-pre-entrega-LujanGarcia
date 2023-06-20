@@ -1,9 +1,9 @@
-import { productModel } from "../DAO/models/products.model.js";
+import { productModel } from '../DAO/models/products.model.js';
 
 class ProductService {
   async getAll() {
     const products = await productModel.find({}).exec();
-    const modifiedProduct = products.map((product) => {
+    const modifiedProduct = products.map(product => {
       const modifiedProduct = product.toObject();
       modifiedProduct._id = product._id.toString();
       return modifiedProduct;

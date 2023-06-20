@@ -1,13 +1,13 @@
-import express from "express";
-import ProductManager from "../DAO/productManager.js";
+import express from 'express';
+import ProductManager from '../DAO/productManager.js';
 
 export const productsRouter = express.Router();
 
-const productManager = new ProductManager("db/products.json");
+const productManager = new ProductManager('db/products.json');
 
 // GET con limit
 
-productsRouter.get("/", async (req, res) => {
+productsRouter.get('/', async (req, res) => {
   try {
     const limit = req.query.limit;
     const products = await productManager.getProducts();
@@ -25,7 +25,7 @@ productsRouter.get("/", async (req, res) => {
 
 // GET por ID
 
-productsRouter.get("/:pid", async (req, res) => {
+productsRouter.get('/:pid', async (req, res) => {
   try {
     const id = req.params.pid;
     const product = await productManager.getProductById(parseInt(id));
@@ -33,7 +33,7 @@ productsRouter.get("/:pid", async (req, res) => {
     if (product) {
       res.json(product);
     } else {
-      res.status(404).json({ message: "Producto no encontrado" });
+      res.status(404).json({ message: 'Producto no encontrado' });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -41,7 +41,7 @@ productsRouter.get("/:pid", async (req, res) => {
 });
 
 // POST
-productsRouter.post("/", async (req, res) => {
+productsRouter.post('/', async (req, res) => {
   try {
     const product = req.body;
     await productManager.addProduct(product);
@@ -52,7 +52,7 @@ productsRouter.post("/", async (req, res) => {
 });
 
 // PUT /:pid
-productsRouter.put("/:pid", async (req, res) => {
+productsRouter.put('/:pid', async (req, res) => {
   try {
     const id = req.params.pid;
     const updatedProduct = req.body;
@@ -64,7 +64,7 @@ productsRouter.put("/:pid", async (req, res) => {
 });
 
 // DELETE /:pid
-productsRouter.delete("/:pid", async (req, res) => {
+productsRouter.delete('/:pid', async (req, res) => {
   try {
     const id = req.params.pid;
     productManager.deleteProduct(parseInt(id));

@@ -1,18 +1,18 @@
-import { Server } from "socket.io";
-import { msgModel } from "../DAO/models/msgs.model.js";
-import ProductManager from "../DAO/productManager.js";
-import { productService } from "../services/product.service.js";
+import { Server } from 'socket.io';
+import { msgModel } from '../DAO/models/msgs.model.js';
+import ProductManager from '../DAO/productManager.js';
+import { productService } from '../services/product.service.js';
 
-const productManager = new ProductManager("db/products.json");
+const productManager = new ProductManager('db/products.json');
 
 export function connectSocketServer(httpServer) {
   // CONFIG DE SOCKET.IO
   const socketServer = new Server(httpServer);
 
-  socketServer.on("connection", (socket) => {
+  socketServer.on('connection', socket => {
     console.log(`New client: ${socket.id}`);
 
-    socket.on("new-product", async (newProd) => {
+    socket.on('new-product', async newProd => {
       try {
         if (
           !newProd.title ||
@@ -22,48 +22,44 @@ export function connectSocketServer(httpServer) {
           !newProd.code ||
           !newProd.stock
         ) {
-          console.log("Todos los campos son obligatorios");
+          console.log('Todos los campos son obligatorios');
           return;
         }
 
         // Validar el tipo de dato de los campos
-        if (typeof newProd.title !== "string") {
+        if (typeof newProd.title !== 'string') {
           console.log("El campo 'title' debe ser una cadena de caracteres");
           return;
         }
 
-        if (typeof newProd.description !== "string") {
-          console.log(
-            "El campo 'description' debe ser una cadena de caracteres"
-          );
+        if (typeof newProd.description !== 'string') {
+          console.log("El campo 'description' debe ser una cadena de caracteres");
           return;
         }
 
-        if (typeof newProd.category !== "string") {
+        if (typeof newProd.category !== 'string') {
           console.log("El campo 'category' debe ser una cadena de caracteres");
           return;
         }
 
-        if (typeof newProd.price !== "number") {
+        if (typeof newProd.price !== 'number') {
           console.log("El campo 'price' debe ser un número");
           return;
         }
 
-        if (typeof newProd.code !== "string") {
+        if (typeof newProd.code !== 'string') {
           console.log("El campo 'code' debe ser una cadena de caracteres");
           return;
         }
 
-        if (typeof newProd.stock !== "number") {
+        if (typeof newProd.stock !== 'number') {
           console.log("El campo 'stock' debe ser un número");
           return;
         }
 
         // Validar que no se repita el código
         const currentProducts = await productService.getAll();
-        const codeAlreadyExists = currentProducts.some(
-          (prod) => prod.code === newProd.code
-        );
+        const codeAlreadyExists = currentProducts.some(prod => prod.code === newProd.code);
 
         if (codeAlreadyExists) {
           console.log(`Ya existe un producto con el código ${newProd.code}`);
@@ -71,8 +67,7 @@ export function connectSocketServer(httpServer) {
         }
 
         // Validar y establecer el valor por defecto para el campo status
-        const status =
-          typeof newProd.status === "boolean" ? newProd.status : true;
+        const status = typeof newProd.status === 'boolean' ? newProd.status : true;
 
         // Agregar el producto al arreglo con un id autoincrementable
         const newProduct = {
@@ -83,24 +78,24 @@ export function connectSocketServer(httpServer) {
 
         const productsList = await productService.getAll();
         console.log(productsList);
-        socketServer.emit("products", productsList);
+        socketServer.emit('products', productsList);
       } catch (err) {
         console.log(err);
       }
     });
 
-    socket.on("delete-product", async (productId) => {
+    socket.on('delete-product', async productId => {
       try {
         await productService.deleteProduct(productId);
 
         const productsList = await productService.getAll();
-        socketServer.emit("products", productsList);
+        socketServer.emit('products', productsList);
       } catch (err) {
         console.log(err);
       }
     });
 
-    socket.on("msg_front_to_back", async (msg) => {
+    socket.on('msg_front_to_back', async msg => {
       try {
         await msgModel.create(msg);
       } catch (e) {
@@ -109,7 +104,7 @@ export function connectSocketServer(httpServer) {
 
       try {
         const msgs = await msgModel.find({}).exec();
-        socketServer.emit("listado_de_msgs", msgs);
+        socketServer.emit('listado_de_msgs', msgs);
       } catch (e) {
         console.log(e);
       }
