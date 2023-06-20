@@ -1,0 +1,38 @@
+<div class="chat-body">
+
+  <div class="container">
+    <div class="chat-header">
+      <h3>CHAT DE LA TIENDA</h3>
+    </div>
+    <hr class="green-line" />
+
+    <div class="chat-messages">
+      <p>Listado de mensajes:</p>
+      <div id="div-msgs" class="message-container">
+        <div class="text-center">
+          <div class="spinner-grow text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="green-line" />
+
+    <div class="chat-input">
+      <div class="input-group">
+        <input
+          id="input-msg"
+          type="text"
+          class="form-control"
+          placeholder="Ingrese su mensaje..."
+        />
+        <button id="send-btn" class="btn btn-success" disabled>Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/test-chat.js"></script>
