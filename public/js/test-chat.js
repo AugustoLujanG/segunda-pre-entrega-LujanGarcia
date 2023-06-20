@@ -9,15 +9,14 @@ async function main() {
   try {
     const { value: email } = await Swal.fire({
       title: "Enter your email",
-      input: "text",
+      input: "email",
       inputLabel: "Your email",
       inputValue: "",
+      inputPlaceholder: "Enter your email address",
       showCancelButton: false,
       allowOutsideClick: false,
-      inputValidator: (value) => {
-        if (!value) {
-          return "You need to write something!";
-        }
+      if(email) {
+        Swal.fire(`Entered email: ${email}`);
       },
     });
 
