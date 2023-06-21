@@ -1,23 +1,16 @@
 import express from 'express';
-import ProductManager from '../DAO/productManager.js';
+import { productService } from '../services/product.service.js';
 
 export const productsRouter = express.Router();
-
-const productManager = new ProductManager('db/products.json');
 
 // GET con limit
 
 productsRouter.get('/', async (req, res) => {
   try {
-    const limit = req.query.limit;
-    const products = await productManager.getProducts();
+    const queryParams = req.query;
 
-    if (limit) {
-      const limitedProducts = products.slice(0, parseInt(limit));
-      res.json(limitedProducts);
-    } else {
-      res.json(products);
-    }
+    const products = await productService.getJson(queryParams);
+    res.status(200).json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -28,10 +21,10 @@ productsRouter.get('/', async (req, res) => {
 productsRouter.get('/:pid', async (req, res) => {
   try {
     const id = req.params.pid;
-    const product = await productManager.getProductById(parseInt(id));
+    const productById = await productService.getById(id);
 
-    if (product) {
-      res.json(product);
+    if (productById) {
+      res.status(200).render('home', { productById: [productById] });
     } else {
       res.status(404).json({ message: 'Producto no encontrado' });
     }

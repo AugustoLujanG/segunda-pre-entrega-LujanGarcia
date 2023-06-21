@@ -10,7 +10,6 @@ const cartManager = new CartManager('db/carts.json');
 
 cartsRouter.get('/', async (req, res) => {
   try {
-    // const carts = await cartManager.getCarts();
     const carts = await cartService.getAll();
 
     if (carts) {

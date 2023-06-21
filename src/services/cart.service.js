@@ -10,15 +10,6 @@ class CartService {
     });
     return modifiedCart;
   }
-
-  // async createProduct(newProd) {
-  //   const productCreated = await productModel.create(newProd);
-  //   return productCreated;
-  // }
-
-  // async deleteProduct(productId) {
-  //   await productModel.deleteOne({ _id: productId }).exec();
-  // }
 }
 
 export const cartService = new CartService();

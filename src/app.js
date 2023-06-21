@@ -6,7 +6,6 @@ import { home } from './routes/home.router.js';
 import { productsRouter } from './routes/products.router.js';
 import { realTimeProducts } from './routes/realtimeproducts.router.js';
 import { testChatRouter } from './routes/test-chat.router.js';
-import { usersRouter } from './routes/users.router.js';
 import { connectMongo } from './utils/dbConnection.js';
 import { connectSocketServer } from './utils/socketServer.js';
 
@@ -34,7 +33,6 @@ connectSocketServer(httpServer);
 //TODOS MIS ENDPOINTS
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
-app.use('/api/users', usersRouter);
 app.use('/home', home);
 app.use('/realtimeproducts', realTimeProducts);
 app.use('/test-chat', testChatRouter);

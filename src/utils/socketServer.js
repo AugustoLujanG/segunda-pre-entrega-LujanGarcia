@@ -58,7 +58,7 @@ export function connectSocketServer(httpServer) {
         }
 
         // Validar que no se repita el código
-        const currentProducts = await productService.getAll();
+        const currentProducts = await productService.getAllProducts();
         const codeAlreadyExists = currentProducts.some(prod => prod.code === newProd.code);
 
         if (codeAlreadyExists) {
@@ -76,8 +76,7 @@ export function connectSocketServer(httpServer) {
         };
         await productService.createProduct(newProduct);
 
-        const productsList = await productService.getAll();
-        console.log(productsList);
+        const productsList = await productService.getAllProducts();
         socketServer.emit('products', productsList);
       } catch (err) {
         console.log(err);
@@ -88,7 +87,7 @@ export function connectSocketServer(httpServer) {
       try {
         await productService.deleteProduct(productId);
 
-        const productsList = await productService.getAll();
+        const productsList = await productService.getAllProducts();
         socketServer.emit('products', productsList);
       } catch (err) {
         console.log(err);

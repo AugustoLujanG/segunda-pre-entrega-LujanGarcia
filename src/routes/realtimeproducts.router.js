@@ -10,15 +10,15 @@ const productManager = new ProductManager('db/products.json');
 
 realTimeProducts.get('/', async (req, res) => {
   try {
-    const limit = req.query.limit;
-    const products = await productService.getAll();
+    const queryParams = req.query;
 
-    if (limit) {
-      const limitedProducts = products.slice(0, parseInt(limit));
-      res.status(200).render('realtimeproducts', { limitedProducts });
-    } else {
-      res.status(200).render('realtimeproducts', { products });
-    }
+    const paginatedProductsResponse = await productService.getAll(queryParams);
+    const paginatedProducts = paginatedProductsResponse.modifiedProducts;
+    const paginated = paginatedProductsResponse.products;
+    console.log(paginated.nextPage);
+    res
+      .status(200)
+      .render('realtimeproducts', { products: paginatedProducts, paginated: paginated });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -29,7 +29,7 @@ realTimeProducts.get('/', async (req, res) => {
 realTimeProducts.get('/:pid', async (req, res) => {
   try {
     const id = req.params.pid;
-    const productById = await productManager.getProductById(parseInt(id));
+    const productById = await productService.getById(id);
 
     if (productById) {
       res.status(200).render('realtimeproducts', { productById: [productById] });
