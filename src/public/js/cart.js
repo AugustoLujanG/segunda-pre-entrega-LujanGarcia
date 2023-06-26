@@ -70,14 +70,12 @@ function addProductToCart(productId) {
 }
 
 function deleteProductToCart(productId) {
-  const products = { products: { product: productId } };
   const cartId = localStorage.getItem('cart-id');
   fetch(`/carts/${cartId}/product/${productId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(products),
   })
     .then(response => response.json())
     .then(data => {
