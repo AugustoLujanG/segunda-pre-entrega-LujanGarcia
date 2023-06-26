@@ -9,7 +9,7 @@ export function connectSocketServer(httpServer) {
   // CONFIG DE SOCKET.IO
   const socketServer = new Server(httpServer);
 
-  socketServer.on('connection', socket => {
+  socketServer.on('connection', async socket => {
     console.log(`New client: ${socket.id}`);
 
     socket.on('new-product', async newProd => {

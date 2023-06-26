@@ -32,6 +32,7 @@ socket.on('products', productsList => {
           <p class="card-text">Status: ${product.status}</p>
         </div>
       </div>
+      <button class='addToCart' data-productid='{{_id}}'>Añadir al carrito</button>
     </div>`;
 
     productListContainer.insertAdjacentHTML('beforeend', productHTML);

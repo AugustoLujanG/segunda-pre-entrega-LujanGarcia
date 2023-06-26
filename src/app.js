@@ -1,5 +1,6 @@
 import express from 'express';
 import handlebars from 'express-handlebars';
+import path from 'path';
 import { __dirname } from './config.js';
 import { cartsRouter } from './routes/carts.router.js';
 import { home } from './routes/home.router.js';
@@ -17,7 +18,8 @@ connectMongo();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // CONFIG DEL MOTOR DE PLANTILLAS
 app.engine('handlebars', handlebars.engine());
@@ -32,7 +34,7 @@ connectSocketServer(httpServer);
 
 //TODOS MIS ENDPOINTS
 app.use('/api/products', productsRouter);
-app.use('/api/carts', cartsRouter);
+app.use('/carts', cartsRouter);
 app.use('/home', home);
 app.use('/realtimeproducts', realTimeProducts);
 app.use('/test-chat', testChatRouter);

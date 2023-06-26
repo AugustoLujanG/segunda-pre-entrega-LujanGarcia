@@ -1,19 +1,21 @@
 import express from 'express';
-import CartManager from '../DAO/cartManager.js';
 import { cartService } from '../services/cart.service.js';
 
 export const cartsRouter = express.Router();
 
-const cartManager = new CartManager('db/carts.json');
+// GET /:cid
 
-// GET todos los carritos
-
-cartsRouter.get('/', async (req, res) => {
+cartsRouter.get('/:cid', async (req, res) => {
   try {
-    const carts = await cartService.getAll();
+    const cartId = req.params.cid;
+    const cart = await cartService.getCart(cartId);
 
-    if (carts) {
-      res.json(carts);
+    const plainCart = cart.products.map(cart => cart.toObject());
+
+    if (cart) {
+      res.status(200).render('carts', { plainCart, cartId: [cartId] });
+    } else {
+      res.status(404).json({ message: `Carrito ${cartId} no encontrado` });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -24,54 +26,62 @@ cartsRouter.get('/', async (req, res) => {
 
 cartsRouter.post('/', async (req, res) => {
   try {
-    const newCart = await cartManager.createCart();
+    const products = req.body;
+    const newCart = await cartService.createCart(products);
     res.status(201).json(newCart);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
-// GET /:cid
+// POST /:cid
 
-cartsRouter.get('/:cid', async (req, res) => {
+cartsRouter.post('/:cid', async (req, res) => {
   try {
     const cartId = req.params.cid;
-    const cart = await cartManager.getCartById(parseInt(cartId));
-
-    if (cart) {
-      res.json(cart.products);
-    } else {
-      res.status(404).json({ message: `Carrito ${cartId} no encontrado` });
-    }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    const products = req.body;
+    const cart = await cartService.addToCart(cartId, products);
+    res.status(201).json(cart);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
-// POST /:cid/product/:pid
+// PUT /:cid/product/:pid
 
-cartsRouter.post('/:cid/product/:pid', async (req, res) => {
+cartsRouter.put('/:cid/product/:pid', async (req, res) => {
   try {
-    const cartId = parseInt(req.params.cid);
-    const productId = parseInt(req.params.pid);
+    const { cid, pid } = req.params;
+    const cart = await cartService.addProductToCart(cid, pid);
+    res.status(201).json(cart);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+});
 
-    // Verificar si el carrito existe
-    const cart = await cartManager.getCartById(cartId);
-    if (!cart) {
-      return res.status(404).json({ message: `Carrito ${cartId} no encontrado` });
-    }
+// DELETE /:cid/product/:pid
 
-    // Verificar si el producto existe
-    const product = await cartManager.getProductById(productId);
-    if (!product) {
-      return res.status(404).json({ message: `Producto ${productId} no encontrado` });
-    }
+cartsRouter.delete('/:cid/product/:pid', async (req, res) => {
+  try {
+    const { cid, pid } = req.params;
+    const cart = await cartService.deleteProduct(cid, pid);
+    res.status(200).json(cart);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: 'error', message: 'Internal server error' });
+  }
+});
 
-    await cartManager.addProductToCart(cartId, productId);
-    res.json({
-      message: `Producto ${productId} agregado al carrito ${cartId}`,
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+// DELETE /:cid
+
+cartsRouter.delete('/:cid', async (req, res) => {
+  try {
+    const cid = req.params.cid;
+    await cartService.deleteCart(cid);
+    res.status(200).json({ status: 'success', message: 'Cart cleared successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ status: 'error', message: 'Internal server error' });
   }
 });
