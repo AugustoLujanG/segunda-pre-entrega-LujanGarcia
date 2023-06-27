@@ -2,6 +2,7 @@ const carritoId = localStorage.getItem('cart-id');
 const addToCart = document.querySelectorAll('.addToCart');
 const deleteToCart = document.querySelectorAll('.deleteToCart');
 const deleteCart = document.querySelectorAll('.deleteCart');
+const cartIcon = document.getElementById('cartIcon');
 
 if (!carritoId) {
   alert('no id');
@@ -23,6 +24,12 @@ if (!carritoId) {
     .catch(error => {
       console.error('Error:', error);
     });
+}
+
+if (cartIcon) {
+  cartIcon.addEventListener('click', () => {
+    window.location.href = `/carts/${carritoId}`;
+  });
 }
 
 addToCart.forEach(button => {

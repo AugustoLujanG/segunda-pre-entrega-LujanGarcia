@@ -1,64 +1,71 @@
-<div class='row'>
-  {{#each products}}
-    <div class='col-md-3'>
-      <div class='card'>
-        <img class='card-img-top' src={{thumbnails}} alt='' />
-        <div class='card-body'>
-          <h2 class='card-title'>{{title}}</h2>
-          <p class='card-text'>{{description}}</p>
-          <p class='card-text'>ID: {{_id}}</p>
-          <p class='card-text'>Código: {{code}}</p>
-          <p class='card-text'>Categoría: {{category}}</p>
-          <p class='card-text'>Stock: {{stock}}</p>
-          <p class='card-text'>Precio: ${{price}}</p>
-          <p class='card-text'>Status: {{status}}</p>
+<div class='container-fluid overflow-auto'>
+
+  <div class='row'>
+    {{#each products}}
+      <div class='col-md-4'>
+        <div class='card'>
+          <img class='card-img-top' src={{thumbnails}} alt='' />
+          <div class='card-body'>
+            <h2 class='card-title'>{{title}}</h2>
+            <p class='card-text'>{{description}}</p>
+            <p class='card-text'><strong>ID:</strong> {{_id}}</p>
+            <p class='card-text'><strong>Código:</strong> {{code}}</p>
+            <p class='card-text'><strong>Categoría:</strong> {{category}}</p>
+            <p class='card-text'><strong>Stock:</strong> {{stock}}</p>
+            <p class='card-text'><strong>Precio:</strong> ${{price}}</p>
+            <p class='card-text'><strong>Status:</strong> {{status}}</p>
+          </div>
         </div>
+        <button class='btn btn-primary mb-3 addToCart' data-productid='{{_id}}'>Añadir al carrito</button>
       </div>
-      <button class='addToCart' data-productid='{{_id}}'>Añadir al carrito</button>
-    </div>
-  {{/each}}
-</div>
+    {{/each}}
+  </div>
 
-<div class='row'>
-  {{#each productById}}
-    <div class='col-md-3'>
-      <div class='card'>
-        <img class='card-img-top' src={{thumbnails}} alt='' />
-        <div class='card-body'>
-          <h2 class='card-title'>{{title}}</h2>
-          <p class='card-text'>{{description}}</p>
-          <p class='card-text'>ID: {{_id}}</p>
-          <p class='card-text'>Código: {{code}}</p>
-          <p class='card-text'>Categoría: {{category}}</p>
-          <p class='card-text'>Stock: {{stock}}</p>
-          <p class='card-text'>Precio: ${{price}}</p>
-          <p class='card-text'>Status: {{status}}</p>
+  <div class='row'>
+    {{#each productById}}
+      <div class='col-md-4'>
+        <div class='card'>
+          <img class='card-img-top' src={{thumbnails}} alt='' />
+          <div class='card-body'>
+            <h2 class='card-title'>{{title}}</h2>
+            <p class='card-text'>{{description}}</p>
+            <p class='card-text'><strong>ID:</strong> {{_id}}</p>
+            <p class='card-text'><strong>Código:</strong> {{code}}</p>
+            <p class='card-text'><strong>Categoría:</strong> {{category}}</p>
+            <p class='card-text'><strong>Stock:</strong> {{stock}}</p>
+            <p class='card-text'><strong>Precio:</strong> ${{price}}</p>
+            <p class='card-text'><strong>Status:</strong> {{status}}</p>
+          </div>
         </div>
+        <button class='btn btn-primary mb-3 addToCart' data-productid='{{_id}}'>Añadir al carrito</button>
       </div>
-      <button class='addToCart' data-productid='{{_id}}'>Añadir al carrito</button>
-    </div>
-  {{/each}}
+    {{/each}}
+  </div>
+
+  <nav aria-label='Paginación'>
+    <ul class='pagination justify-content-center'>
+      {{#if paginated.hasPrevPage}}
+        <li class='page-item'>
+          <a class='page-link' href='/home/?limit={{paginated.limit}}&page={{paginated.prevPage}}'>
+            ⬅️{{paginated.prevPage}}
+          </a>
+        </li>
+      {{/if}}
+      <li class='page-item active'>
+        <a class='page-link' href='#'>
+          {{paginated.page}}
+          <span class='sr-only'>(actual)</span>
+        </a>
+      </li>
+      {{#if paginated.hasNextPage}}
+        <li class='page-item'>
+          <a class='page-link' href='/home/?limit={{paginated.limit}}&page={{paginated.nextPage}}'>
+            {{paginated.nextPage}}➡️
+          </a>
+        </li>
+      {{/if}}
+    </ul>
+  </nav>
 </div>
-
-<h3>paginacion</h3>
-<p>
-
-  {{#if paginated.hasPrevPage}}
-    <a
-      style='text-decoration: none;'
-      href='/home/?limit={{paginated.limit}}&page={{paginated.prevPage}}'
-    >⬅️{{paginated.prevPage}}</a>
-  {{/if}}
-  pagina
-  {{paginated.page}}
-  de
-  {{paginated.totalPages}}
-  {{#if paginated.hasNextPage}}
-    <a
-      style='text-decoration: none;'
-      href='/home/?limit={{paginated.limit}}&page={{paginated.nextPage}}'
-    >{{paginated.nextPage}}➡️</a>
-  {{/if}}
-</p>
 
 <script type='module' src='/js/cart.js'></script>
