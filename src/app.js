@@ -2,6 +2,7 @@ import express from 'express';
 import handlebars from 'express-handlebars';
 import path from 'path';
 import { __dirname } from './config.js';
+import { cartsApiRouter } from './routes/carts.api.router.js';
 import { cartsRouter } from './routes/carts.router.js';
 import { home } from './routes/home.router.js';
 import { productsRouter } from './routes/products.router.js';
@@ -18,7 +19,6 @@ connectMongo();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use(express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // CONFIG DEL MOTOR DE PLANTILLAS
@@ -34,6 +34,7 @@ connectSocketServer(httpServer);
 
 //TODOS MIS ENDPOINTS
 app.use('/api/products', productsRouter);
+app.use('/api/carts', cartsApiRouter);
 app.use('/carts', cartsRouter);
 app.use('/home', home);
 app.use('/realtimeproducts', realTimeProducts);
